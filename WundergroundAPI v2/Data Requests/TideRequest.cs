@@ -4,22 +4,22 @@ namespace WundergroundAPI_v2
 {
     public class TideRequest : APIRequest<TideData>
     {
-        public TideRequest(string cacheDirectory) : base(cacheDirectory) { }
+        public TideRequest(string cacheDirectory) : base(cacheDirectory) { this.Feature = APIFeatures.Tide; }
 
         public override TideData ParseXML(XPathNavigator navigator)
         {
             TideData data = new TideData();
 
-            data.TideSite = navigator.SelectSingleNodeNoError("//tide/tideInfo/tideSite");
-            data.Latitude = navigator.SelectSingleNodeNoError("//tide/tideInfo/lat");
-            data.Longitude = navigator.SelectSingleNodeNoError("//tide/tideInfo/lon");
-            data.Units = navigator.SelectSingleNodeNoError("//tide/tideInfo/units");
-            data.Type = navigator.SelectSingleNodeNoError("//tide/tideInfo/type");
-            data.TZName = navigator.SelectSingleNodeNoError("//tide/tideInfo/tzname");
-            data.MaxHeight = navigator.SelectSingleNodeNoError("//tide/tideSummaryStats/maxheight");
-            data.MinHeight = navigator.SelectSingleNodeNoError("//tide/tideSummaryStats/minheight");
+            data.TideSite = navigator.SelectSingleNodeNoError("/response/tide/tideInfo/tideSite");
+            data.Latitude = navigator.SelectSingleNodeNoError("/response/tide/tideInfo/lat");
+            data.Longitude = navigator.SelectSingleNodeNoError("/response/tide/tideInfo/lon");
+            data.Units = navigator.SelectSingleNodeNoError("/response/tide/tideInfo/units");
+            data.Type = navigator.SelectSingleNodeNoError("/response/tide/tideInfo/type");
+            data.TZName = navigator.SelectSingleNodeNoError("/response/tide/tideInfo/tzname");
+            data.MaxHeight = navigator.SelectSingleNodeNoError("/response/tide/tideSummaryStats/maxheight");
+            data.MinHeight = navigator.SelectSingleNodeNoError("/response/tide/tideSummaryStats/minheight");
 
-            XPathNodeIterator obsLocations = navigator.Select("//tide/tideSummary/observation");
+            XPathNodeIterator obsLocations = navigator.Select("/response/tide/tideSummary/observation");
             foreach (XPathNavigator obslocation in obsLocations)
             {
                 TideData.ObsLocation location = new TideData.ObsLocation();

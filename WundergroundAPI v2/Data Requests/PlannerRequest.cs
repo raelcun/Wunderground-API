@@ -15,6 +15,7 @@ namespace WundergroundAPI_v2
         public PlannerRequest(string cacheDirectory)
             : base(cacheDirectory)
         {
+            this.Feature = APIFeatures.Planner;
             DateTime now = DateTime.Now;
             this.StartDate = new DateTime(now.Year, now.Month - 1, now.Day);
             this.EndDate = new DateTime(now.Year, now.Month, now.Day);
@@ -30,13 +31,13 @@ namespace WundergroundAPI_v2
             this.EndDate = new DateTime(endDate.Year, endDate.Month, endDate.Day);
         }
 
-        protected override string GenerateURL(string feature, string settings, string query)
+        protected override string GenerateURL(string feature, string settings, string query, string extension)
         {
             string startMonth = StartDate.Month.ToString().PadLeft(2, '0');
             string startDay = StartDate.Day.ToString().PadLeft(2, '0');
             string endMonth = EndDate.Month.ToString().PadLeft(2, '0');
             string endDay = EndDate.Day.ToString().PadLeft(2, '0');
-            return base.GenerateURL("planner_" + startMonth + startDay + endMonth + endDay, settings, query);
+            return base.GenerateURL("planner_" + startMonth + startDay + endMonth + endDay, settings, query, extension);
         }
 
         public override PlannerData ParseXML(XPathNavigator navigator)
@@ -117,25 +118,6 @@ namespace WundergroundAPI_v2
             data.LowDewpoint.Max.Metric = navigator.SelectSingleNodeNoError("/response/trip/dewpoint_low/max/C");
 
             data.CloudCover = navigator.SelectSingleNodeNoError("/response/trip/cloud_cover/cond");
-
-            /*public Chance ChanceOfTempOverSixty { get; private set; }
-            public Chance ChanceOfWindyDay { get; private set; }
-            public Chance ChanceOfPartlyCloudyDay { get; private set; }
-            public Chance ChanceOfSunnyCloudyDay { get; private set; }
-            public Chance ChanceOfCloudyDay { get; private set; }
-            public Chance ChanceOfFogDay { get; private set; }
-            public Chance ChanceOfHumidity { get; private set; }
-            public Chance ChanceOfPrecip { get; private set; }
-            public Chance ChanceOfRainDay { get; private set; }
-            public Chance ChanceOfTempOverNinety { get; private set; }
-            public Chance ChanceOfThunderDay { get; private set; }
-            public Chance ChanceOfSnowOnGround { get; private set; }
-            public Chance ChanceOfTornadoDay { get; private set; }
-            public Chance ChanceOfSultryDay { get; private set; }
-            public Chance ChanceOfTempBelowFreezing { get; private set; }
-            public Chance ChanceOfTempOverFreezing { get; private set; }
-            public Chance ChanceOfHailDay { get; private set; }
-            public Chance ChanceOfSnowDay { get; private set; }*/
 
             data.ChanceOfTempOverFreezing.Name = navigator.SelectSingleNodeNoError("/response/trip/chance_of/tempoverfreezing/name");
             data.ChanceOfTempOverFreezing.Description = navigator.SelectSingleNodeNoError("/response/trip/chance_of/tempoverfreezing/description");

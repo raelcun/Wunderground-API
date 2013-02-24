@@ -49,13 +49,11 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API Request\APIExtension.cs" />
+    <Compile Include="Cache.cs" />
     <Compile Include="Data Requests\ConditionsRequest.cs" />
     <Compile Include="Data Requests\AstronomyRequest.cs" />
     <Compile Include="Data Requests\Data Types\PlannerData.cs" />
@@ -75,8 +73,8 @@
     <Compile Include="Exceptions\AmbiguousLocation.cs" />
     <Compile Include="API Request\APIFormat.cs" />
     <Compile Include="API Request\APIRequest.cs" />
-    <Compile Include="CachableRequest.cs" />
-    <Compile Include="API Request\APILanguages.cs" />
+    <Compile Include="CacheableRequest.cs" />
+    <Compile Include="API Request\APILanguage.cs" />
     <Compile Include="API Request\APISettings.cs" />
     <Compile Include="API Request\APIFeatures.cs" />
     <Compile Include="API Request\APIQuery.cs" />

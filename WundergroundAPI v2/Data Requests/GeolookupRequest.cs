@@ -12,24 +12,24 @@ namespace WundergroundAPI_v2
 
         public override LocationData ParseXML(XPathNavigator navigator)
         {
-            LocationData location = new LocationData();
+            LocationData data = new LocationData();
 
-            location.Type = navigator.SelectSingleNodeNoError("/response/location/type");
-            location.Country = navigator.SelectSingleNodeNoError("/response/location/country");
-            location.CountryIso3166 = navigator.SelectSingleNodeNoError("/response/location/country_iso3166");
-            location.CountryName = navigator.SelectSingleNodeNoError("/response/location/country_name");
-            location.State = navigator.SelectSingleNodeNoError("/response/location/state");
-            location.City = navigator.SelectSingleNodeNoError("/response/location/city");
-            location.TzShort = navigator.SelectSingleNodeNoError("/response/location/tz_short");
-            location.TzLong = navigator.SelectSingleNodeNoError("/response/location/tz_long");
-            location.Latitude = navigator.SelectSingleNodeNoError("/response/location/lat");
-            location.Longitude = navigator.SelectSingleNodeNoError("/response/location/lon");
-            location.ZipCode = navigator.SelectSingleNodeNoError("/response/location/zip");
-            location.Magic = navigator.SelectSingleNodeNoError("/response/location/magic");
-            location.WMO = navigator.SelectSingleNodeNoError("/response/location/wmo");
-            location.Link = navigator.SelectSingleNodeNoError("/response/location/l");
-            location.RequestUrl = navigator.SelectSingleNodeNoError("/response/location/requesturl");
-            location.Wuiurl = navigator.SelectSingleNodeNoError("/response/location/wuiurl");
+            data.Type = navigator.SelectSingleNodeNoError("/response/location/type");
+            data.Country = navigator.SelectSingleNodeNoError("/response/location/country");
+            data.CountryIso3166 = navigator.SelectSingleNodeNoError("/response/location/country_iso3166");
+            data.CountryName = navigator.SelectSingleNodeNoError("/response/location/country_name");
+            data.State = navigator.SelectSingleNodeNoError("/response/location/state");
+            data.City = navigator.SelectSingleNodeNoError("/response/location/city");
+            data.TzShort = navigator.SelectSingleNodeNoError("/response/location/tz_short");
+            data.TzLong = navigator.SelectSingleNodeNoError("/response/location/tz_long");
+            data.Latitude = navigator.SelectSingleNodeNoError("/response/location/lat");
+            data.Longitude = navigator.SelectSingleNodeNoError("/response/location/lon");
+            data.ZipCode = navigator.SelectSingleNodeNoError("/response/location/zip");
+            data.Magic = navigator.SelectSingleNodeNoError("/response/location/magic");
+            data.WMO = navigator.SelectSingleNodeNoError("/response/location/wmo");
+            data.Link = navigator.SelectSingleNodeNoError("/response/location/l");
+            data.RequestUrl = navigator.SelectSingleNodeNoError("/response/location/requesturl");
+            data.Wuiurl = navigator.SelectSingleNodeNoError("/response/location/wuiurl");
 
             XPathNodeIterator airportStations = navigator.Select("/response/location/nearby_weather_stations/airport/station");
             foreach (XPathNavigator station in airportStations)
@@ -43,7 +43,7 @@ namespace WundergroundAPI_v2
                 airportStation.Latitude = station.SelectSingleNodeNoError("./lat");
                 airportStation.Longitude = station.SelectSingleNodeNoError("./lon");
 
-                location.NearbyAirportStations.Add(airportStation);
+                data.NearbyAirportStations.Add(airportStation);
             }
 
             XPathNodeIterator personalStations = navigator.Select("/response/location/nearby_weather_stations/pws/station");
@@ -63,10 +63,10 @@ namespace WundergroundAPI_v2
                 personalStation.DistanceKm = station.SelectSingleNodeNoError("./distance_km");
                 personalStation.DistanceMi = station.SelectSingleNodeNoError("./distance_mi");
 
-                location.NearbyPersonalStations.Add(personalStation);
+                data.NearbyPersonalStations.Add(personalStation);
             }
 
-            return location;
+            return data;
         }
     }
 }

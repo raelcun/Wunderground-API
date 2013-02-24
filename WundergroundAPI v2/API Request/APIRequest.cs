@@ -5,7 +5,7 @@ using System.Xml.XPath;
 namespace WundergroundAPI_v2
 {
     // T is the data type that holds the parsed data
-    public abstract class APIRequest<T> : CachableRequest
+    public abstract class APIRequest<T> : CacheableRequest
     {
         #region Constants
         private const string BASE_URL = "http://api.wunderground.com/api";
@@ -14,7 +14,8 @@ namespace WundergroundAPI_v2
 
         #region Public Properties
         public APIFeatures Feature { get; set; }
-        public APILanguages Language { get; set; }
+        public APILanguage Language { get; set; }
+        public APIExtension Extension { get; set; }
         public APISettings Settings { get; private set; }
         public APIQuery Query { get; private set; }
         #endregion Public Properties
@@ -23,7 +24,7 @@ namespace WundergroundAPI_v2
         protected APIRequest(string cacheDirectory) : base(cacheDirectory)
         {
             this.Feature = APIFeatures.Conditions;
-            this.Language = APILanguages.EN;
+            this.Language = APILanguage.EN;
             this.Settings = new APISettings();
             this.Query = new APIQuery();
         }
@@ -32,19 +33,19 @@ namespace WundergroundAPI_v2
         #region Public Methods
         public abstract T ParseXML(XPathNavigator navigator);
 
-        public T MakeRequest() { return MakeRequest(false); }
-        public T MakeRequest(bool forceUpdate)
+        public T GetParsedAPIResponse() { return GetParsedAPIResponse(false); }
+        public T GetParsedAPIResponse(bool forceUpdate)
         {
-            XPathNavigator navigator = GetXmlRequestOutput(forceUpdate);
+            XPathNavigator navigator = GetAPIResponse(forceUpdate);
             return ParseXML(navigator);
         }
         #endregion Public Methods
 
         #region Protected Methods
-        protected XPathNavigator GetXmlRequestOutput(bool forceUpdate)
+        protected XPathNavigator GetAPIResponse(bool forceUpdate)
         {
-            string url = GenerateURL(this.Feature.ToString(), this.Settings.ToString(), this.Query.ToString());
-            string output = GetRequestOutput(url, forceUpdate);
+            string url = GenerateURL(this.Feature.ToString(), this.Settings.ToString(), this.Query.ToString(), this.Extension.ToString());
+            string output = GetResponse(url, forceUpdate);
 
             XPathNavigator navigator;
             using (StringReader sr = new StringReader(output))
@@ -90,9 +91,9 @@ namespace WundergroundAPI_v2
             return navigator;
         }
 
-        protected virtual string GenerateURL(string feature, string settings, string query)
+        protected virtual string GenerateURL(string feature, string settings, string query, string extension)
         {
-            return BASE_URL + "/" + API_KEY + "/" + feature.ToLower() + "/" + settings.ToLower() + "/q/" + query.ToLower() + ".xml";
+            return BASE_URL + "/" + API_KEY + "/" + feature.ToLower() + "/" + settings.ToLower() + "/q/" + query.ToLower() + "." + extension.ToLower();
         }
         #endregion Protected Methods
     }

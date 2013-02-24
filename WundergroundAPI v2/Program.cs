@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace WundergroundAPI_v2
 {
@@ -6,16 +7,15 @@ namespace WundergroundAPI_v2
     {
         static void Main(string[] args)
         {
-            PlannerRequest request = new PlannerRequest(Environment.CurrentDirectory + "/cache");
+            TideRequest request = new TideRequest(Environment.CurrentDirectory + "/cache");
 
             try
             {
                 request.Query.setZipCode("45069");
-                PlannerData data = request.MakeRequest();
+                TideData data = request.GetParsedAPIResponse();
                 Console.WriteLine(data);
-                System.Diagnostics.Trace.WriteLine(data);
             }
-            catch(AmbiguousLocationException ex)
+            catch (AmbiguousLocationException ex)
             {
                 foreach (AmbiguousLocation l in ex.Locations)
                     Console.WriteLine(l);
